@@ -16,7 +16,6 @@ bool InitList(LinkList &L)
 }
 
 
-
 // 在指定节点后插入
 bool InsertNextNode(LNode *p, int e)
 {
@@ -25,7 +24,7 @@ bool InsertNextNode(LNode *p, int e)
 		return false;
 	}
 	LNode *s = (LNode *)malloc(sizeof(LNode));
-	if (s == NULL)
+	if (s == NULL) // 分配内存失败
 	{
 		return false;
 	}
@@ -36,6 +35,7 @@ bool InsertNextNode(LNode *p, int e)
 }
 
 // 在指定节点前插入
+// p：指定节点 e：需插入的元素
 bool InsertPriorNode(LNode *p, int e)
 {
 	if (p == NULL)
@@ -64,21 +64,22 @@ bool ListDelete(LinkList &L, int i, int  &e)
 	if (i == 1)
 	{
 		e = L->data;
-		L = L->next;
+		free(L);
+		L = NULL;
 		return true;
 	}
 	LNode *p = L;
 	int j = 1;
-	while (p != NULL && j < i - 1)
+	while (p != NULL && j < i - 1) //先找到需要插入的节点的前一个节点
 	{
 		p = p->next;
 		j++;
 	}
-	if (p == NULL)
+	if (p == NULL) // i不合法
 	{
 		return false;
 	}
-	if (p->next == NULL)
+	if (p->next == NULL) // i不合法
 	{
 		return false;
 	}
@@ -107,7 +108,7 @@ bool DeleteNode(LNode *p, LinkList &L)
 		s->next = NULL;
 		return true;
 	}
-	LNode *s = p->next;
+	LNode *s = p->next;// 偷天换日
 	p->data = s->data;
 	p->next = s->next;
 	free(s);
@@ -119,7 +120,7 @@ LNode *GetElem(LinkList &L, int i)
 {
 	if (i < 1)
 	{
-		return false;
+		return NULL;
 	}
 	LNode *p = L;
 	int j = 1;
@@ -131,6 +132,7 @@ LNode *GetElem(LinkList &L, int i)
 	return p;
 }
 
+// 按位序插入
 bool ListInsert(LinkList &L, int i, int e)
 {
 	if (i < 1)
@@ -169,7 +171,7 @@ bool ListInsert(LinkList &L, int i, int e)
 LNode *LocateElem(LinkList &L, int e)
 {
 	LNode *p = L;
-	while (p->data != e && p != NULL)
+	while (p != NULL && p->data != e)// (p->data != e && p != NULL)若p指向NULL，p->data出错
 	{
 		p = p->next;
 	}
@@ -204,7 +206,7 @@ void PrintList(LinkList L)
 void ListTailInsert(LinkList &L)
 {
 	LNode *s = NULL;
-	LNode *r = NULL;
+	LNode *r = NULL;// 记录指向
 	int x = 0;
 	scanf("%d", &x);
 	s = (LNode *)malloc(sizeof(LNode));
@@ -262,17 +264,30 @@ void ReverseList(LinkList &L)
 	}
 }
 
+// 是否为空
+bool isEmpty(LinkList L)
+{
+	if (L == NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int main(void)
 {
 	LinkList L;
-	InitList(L);
+	//InitList(L);
 	// ListTailInsert(L);
-	ListHeadInsert(L);
-	PrintList(L);
-	ReverseList(L);
-	PrintList(L);
-
-	system("pause");
+	//ListHeadInsert(L);
+	//PrintList(L);
+	//ReverseList(L);
+	//PrintList(L);
+	//printf("%d", isEmpty(L));
+	//system("pause");
 
 	return 0;
 }
