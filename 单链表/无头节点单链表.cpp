@@ -2,6 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h> 
+
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ ,__LINE__)
+#define new DBG_NEW
+#endif
+#endif 
 
 typedef struct LNode
 {
@@ -277,17 +286,34 @@ bool isEmpty(LinkList L)
 	}
 }
 
+//Ïú»ÙÁ´±í
+bool destoryList(LinkList &L)
+{
+	LNode *p = L;
+	LNode *r = L;
+	L = NULL;
+	while (p != NULL)
+	{
+		p = p->next;
+		free(r);
+		r = p;
+	}
+	return true;
+}
+
 int main(void)
 {
 	LinkList L;
-	//InitList(L);
-	// ListTailInsert(L);
+	InitList(L);
+	ListTailInsert(L);
 	//ListHeadInsert(L);
-	//PrintList(L);
+	PrintList(L);
+	destoryList(L);
 	//ReverseList(L);
 	//PrintList(L);
-	//printf("%d", isEmpty(L));
-	//system("pause");
+	printf("%d", isEmpty(L));
+	_CrtDumpMemoryLeaks();
+	system("pause");
 
 	return 0;
 }
